@@ -77,7 +77,9 @@ $.fn.scrollbox = function(config) {
       }
       container[0][config.scrollOffset] = newScrollOffset;
 
-      if (newScrollOffset >= scrollDistance) {
+	  // The second condition is if the container has already reached its scroll limit
+	  // originally this script would then fall into an infinite loop
+      if ((newScrollOffset >= scrollDistance) || (container[0][config.scrollOffset] != newScrollOffset)) {
         for (i = 0; i < config.switchItems; i++) {
           if (config.queue && config.queue.find(config.listItemElement).length > 0) {
             containerUL.append(config.queue.find(config.listItemElement)[0]);
