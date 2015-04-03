@@ -71,6 +71,12 @@ $.fn.scrollbox = function(config) {
       // offset
       if (!config.linear) {
         theStep = Math.max(3, parseInt((scrollDistance - container[0][config.scrollOffset]) * 0.3, 10));
+        // What if there is only 1 more element than switchItems? 
+        // Instead of animating it just zooms up because there are no other steps to take.
+        // so we change the math in this case.
+        if (theStep > (containerUL.height() - container.height()) ) {
+	        theStep = Math.max(3, parseInt(theStep * 0.3, 10));
+        }
         newScrollOffset = Math.min(container[0][config.scrollOffset] + theStep, scrollDistance);
       } else {
         newScrollOffset = Math.min(container[0][config.scrollOffset] + config.step, scrollDistance);
@@ -99,6 +105,7 @@ $.fn.scrollbox = function(config) {
     // Backward
     // 1. If forwarding, then reverse
     // 2. If stoping, then backward once
+    // @todo make updates for "dynamic" height as was done for scrollForward
     scrollBackward = function() {
       if (paused) {
         return;
